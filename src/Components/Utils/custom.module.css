@@ -1,0 +1,9 @@
+.buttonLikeAntD {
+    @apply text-sm;
+    @apply text-white;
+    @apply h-8;
+    @apply rounded-md;
+    @apply px-4;
+    @apply py-1;
+    background: #1677ff;
+}

@@ -37,7 +37,7 @@ export default function LandingPage() {
           },
         ],
       });
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timerId);
   });

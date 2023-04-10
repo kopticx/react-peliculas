@@ -1,10 +1,8 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
 export default function Cargando() {
   return (
-    <Spin indicator={antIcon} size="large" />
+    <Spin indicator={<LoadingOutlined style={{ fontSize: 200 }} spin />} size="large" />
   );
 }

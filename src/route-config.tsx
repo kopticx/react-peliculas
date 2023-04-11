@@ -2,8 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "./Components/Layout";
 import LandingPage from "./Components/LandingPage";
 import IndexGeneros from "./Components/Generos/IndexGeneros";
-import Editargenero from "./Components/Generos/EditarGenero";
-import CrearGenero from "./Components/Generos/CrearGenero";
+import EditarGenero from "./Components/Generos/EditarGenero";
 import IndexActores from "./Components/Actores/IndexActores";
 import CrearActor from "./Components/Actores/CrearActor";
 import EditarActor from "./Components/Actores/EditarActor";
@@ -43,12 +42,8 @@ export const rutas = createBrowserRouter([
         element: <IndexGeneros />
       },
       {
-        path: "/generos/crear",
-        element: <CrearGenero />
-      },
-      {
         path: "/generos/editar/:id",
-        element: <Editargenero />
+        element: <EditarGenero />
       },
       //Actores
       {

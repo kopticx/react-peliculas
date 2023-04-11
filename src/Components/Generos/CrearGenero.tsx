@@ -1,15 +1,16 @@
-import { Button } from "antd";
-import css from '../Utils/custom.module.css'
-import { useNavigate } from "react-router-dom";
+import FormularioCreacionGeneros from "./FormularioCreacionGenero";
+import { GeneroFormProps } from "./Generos.model";
 
-export default function CrearGenero() {
-    const navigate = useNavigate();
 
-    return (
-        <>
-            <h3>Crear Genero</h3>
 
-            <Button className={css.buttonLikeAntD} onClick={() => navigate('/generos')}>Salvar</Button>
-        </>
+export default function CrearGenero({
+    open,
+    onAction,
+    onCancel,
+  }: GeneroFormProps) {
+
+    return(
+        <FormularioCreacionGeneros open={open} onAction={onAction} onCancel={onCancel} />
     )
 }
+

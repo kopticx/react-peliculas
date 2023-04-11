@@ -1,15 +1,9 @@
-import { useParams } from "react-router-dom";
+import DatosCuriosos from "../Utils/DatosCuriosos";
 
-export default function Editargenero() {
-
-  const {id}: any = useParams();
-
-  console.log(id);
-  
-
+export default function EditarGenero() {
   return (
     <>
-      <h3>Editar Genero</h3>
+      <DatosCuriosos />
     </>
   );
 }

@@ -21,7 +21,7 @@ export default function IndexGeneros() {
   return (
     <>
       <div className="flex justify-between mt-5">
-        <Button className={`${css.buttonLikeAntD} order-last`} onClick={() => {setOpen(true)}}>Crear Género</Button>
+        <Button className={`${css.buttonLikeAntD} order-last me-3`} onClick={() => {setOpen(true)}}>Crear Género</Button>
         <h3 className="text-3xl font-bold text-indigo-500 order-2">Géneros</h3>
         <p></p>
       </div>
@@ -29,7 +29,7 @@ export default function IndexGeneros() {
       <CrearGenero open={open} onAction={onCreate} onCancel={onCancel} />
 
       <div className="p-3">
-        <div className="bg-white shadow-md rounded-md mx-auto px-5 py-10 mt-5">
+        <div className={`${css.containerWhite}`}>
           <ListadoGeneros />
         </div>
       </div>

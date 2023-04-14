@@ -1,0 +1,12 @@
+.carousel {
+    @apply bg-blue-600 text-white text-center shadow-md rounded-md md:mx-auto px-2 py-2 mt-10 w-1/4;
+    background: #364d79;
+}
+
+.carousel img {
+    @apply h-40 w-full;
+}
+
+.carousel p {
+    @apply text-sm mb-10 decoration-double text-white font-bold;
+}

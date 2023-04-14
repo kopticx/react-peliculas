@@ -1,9 +1,9 @@
-import DatosCuriosos from "../Utils/DatosCuriosos";
+import FormularioEditarGenero from "./FormularioEditarGenero";
 
 export default function EditarGenero() {
   return (
     <>
-      <DatosCuriosos />
+      <FormularioEditarGenero />
     </>
   );
 }

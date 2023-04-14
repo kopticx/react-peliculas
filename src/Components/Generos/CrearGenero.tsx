@@ -4,13 +4,13 @@ import { GeneroFormProps } from "./Generos.model";
 
 
 export default function CrearGenero({
-    open,
-    onAction,
-    onCancel,
-  }: GeneroFormProps) {
+  open,
+  onAction,
+  onCancel,
+}: GeneroFormProps) {
 
-    return(
-        <FormularioCreacionGeneros open={open} onAction={onAction} onCancel={onCancel} />
-    )
+  return (
+    <FormularioCreacionGeneros open={open} onAction={onAction} onCancel={onCancel} />
+  )
 }
 

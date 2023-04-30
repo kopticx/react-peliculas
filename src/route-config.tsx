@@ -11,7 +11,7 @@ import CrearCine from "./Components/Cines/CrearCine";
 import EditarCine from "./Components/Cines/EditarCine";
 import CrearPelicula from "./Components/Peliculas/CrearPelicula";
 import EditarPelicula from "./Components/Peliculas/EditarPelicula";
-import FiltroPeliculas from "./Components/Peliculas/FiltroPeliculas";
+import FiltroPeliculas from "./Components/Peliculas/FiltroPeliculas/FiltroPeliculas";
 import NotFound from "./Components/Utils/NotFound";
 
 export const rutas = createBrowserRouter([

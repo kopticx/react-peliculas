@@ -1,7 +1,6 @@
 import { IconMasksTheater } from "@tabler/icons-react";
 import { Form, Input, Modal } from "antd";
-import css from "../Utils/custom.module.css";
-import { GeneroFormProps } from "./Generos.model";
+import { generoDTO } from "./Generos.model";
 
 export default function FormularioCreacionGeneros({
   open,
@@ -16,10 +15,9 @@ export default function FormularioCreacionGeneros({
       okText="Crear"
       cancelText="Cancelar"
       onCancel={onCancel}
-      okButtonProps={{ className: css.buttonLikeAntD }}
-      onOk={() => {
-        form
-          .validateFields()
+      okButtonProps={{ className: 'button-Ant' }}
+      onOk={async () => {
+       await form.validateFields()
           .then((values) => {
             form.resetFields();
             onAction(values);
@@ -33,7 +31,6 @@ export default function FormularioCreacionGeneros({
         form={form}
         layout="vertical"
         name="form_in_modal"
-        initialValues={{ modifier: "public" }}
       >
         <Form.Item
           name="nombre"
@@ -45,7 +42,7 @@ export default function FormularioCreacionGeneros({
             },
           ]}
         >
-          <Input prefix={<IconMasksTheater />} allowClear />
+          <Input prefix={<IconMasksTheater />} allowClear maxLength={50}/>
         </Form.Item>
 
         <Form.Item
@@ -65,3 +62,8 @@ export default function FormularioCreacionGeneros({
   );
 }
 
+interface GeneroFormProps {
+  open: boolean;
+  onAction: (values: generoDTO) => void;
+  onCancel: () => void;
+}

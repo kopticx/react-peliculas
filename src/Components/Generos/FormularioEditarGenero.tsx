@@ -1,64 +1,95 @@
 import { IconMasksTheater } from "@tabler/icons-react";
-import { Button, Form, Input } from "antd";
-import css from "../Utils/custom.module.css";
+import { Button, Form, Input, message, notification } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { genero } from "./Generos.model";
+import { notificacionError, notificacionSuccess } from "../Utils/Notificaciones";
 
-export default function FormularioEditarGenero() {
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-  };
+export default function FormularioEditarGenero({genero} : formularioEditarGeneroProps) {
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+  const onFinish = async (values: genero) => {
+
+    await axios.put(`${import.meta.env.VITE_API_URL}/generos/UpdateGenero/${genero?.id}`, values)
+               .then(() => {
+                  notificacionSuccess({message: "Género editado", description: "El género se editó correctamente."})
+                  return navigate("/generos");
+               })
+               .catch(() => notificacionError({message: "Error al editar", description: "Ocurrió un error al editar el género."}));
   };
 
   const navigate = useNavigate();
 
   return (
-    <div className={`${css.divCenter}`}>
-      <h4 className={`${css.titles}`}>Editar Género</h4>
+    <div className="div-center">
+      <h4 className="title">Editar Género</h4>
 
       <Form
+        initialValues={genero}
         className="w-full"
         layout="vertical"
         name="basic"
         style={{ maxWidth: 600 }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item
-          wrapperCol={{offset: 4, span: 16}}
-          name="nombre"
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese el nombre del género.",
-            },
-          ]}
-        >
-          <Input prefix={<IconMasksTheater />} placeholder="Nombre" allowClear />
+        <Form.Item className="mb-1" wrapperCol={{ offset: 4, span: 16 }}>
+          <div className="label">Nombre</div>
+
+          <Form.Item
+            name="nombre"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingrese el nombre del género.",
+              },
+            ]}
+          >
+            <Input
+              prefix={<IconMasksTheater />}
+              placeholder="Nombre Género"
+              allowClear
+            />
+          </Form.Item>
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{offset: 4, span: 16}}
-          name="descripcion"
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese la descripción del género.",
-            },
-          ]}
-        >
-          <Input.TextArea placeholder="Descripción"/>
+        <Form.Item className="mb-1" wrapperCol={{ offset: 4, span: 16 }}>
+          <div className="label">Descripción</div>
+
+          <Form.Item
+            name="descripcion"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingrese la descripción del género.",
+              },
+            ]}
+          >
+            <TextArea placeholder="Descripción" autoSize />
+          </Form.Item>
         </Form.Item>
 
-        <Form.Item className="mt-5" wrapperCol={{offset: 4, span: 16}}>
-            <Button className={`${css.buttonLikeAntD} me-2`} type="primary" htmlType="submit">Editar</Button>
+        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+          <Button
+            className={`button-Ant me-2`}
+            type="primary"
+            htmlType="submit"
+          >
+            Editar
+          </Button>
 
-            <Button className="bg-gray-500 text-white" onClick={() => navigate(-1)}>Cancelar</Button>
+          <Button
+            className="bg-gray-500 text-white"
+            onClick={() => navigate(-1)}
+          >
+            Cancelar
+          </Button>
         </Form.Item>
       </Form>
     </div>
   );
+}
+
+interface formularioEditarGeneroProps {
+  genero: genero;
 }

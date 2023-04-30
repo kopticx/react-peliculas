@@ -44,10 +44,10 @@ export default function LandingPage() {
 
   return (
     <>
-      <h3>En cartelera</h3>
+      <h3 className="title">En cartelera</h3>
       <ListadoPeliculas peliculas={peliculas.enCartelera} />
 
-      <h3>Proximos Estrenos</h3>
+      <h3 className="title">Proximos Estrenos</h3>
       <ListadoPeliculas peliculas={peliculas.proximosEstrenos} />
     </>
   );

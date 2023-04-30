@@ -1,35 +1,61 @@
 import { IconMasksTheater } from "@tabler/icons-react";
-import { List } from "antd";
+import { List, Popconfirm, notification } from "antd";
 import { Link } from "react-router-dom";
+import { genero } from "./Generos.model";
+import axios from "axios";
+import { useState } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
 
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
-];
+export default function ListadoGeneros({generos, setGeneros}: listadoGenerosProps) {
 
-export default function ListadoGeneros() {
+  const [genero, setGenero] = useState<genero>();
+
+  const openNotificationWithIcon = () => {
+    notification.success({
+      message: "Género eliminado",
+      description: "El género se elimino correctamente.",
+      placement: "bottomRight",
+      duration: 3,
+    });
+  }
+
+  const confirm = async () => {
+    await axios.delete(`${import.meta.env.VITE_API_URL}/generos/DeleteGenero/${genero?.id}`);
+    setGeneros([...generos.filter(x => x.id !== genero?.id)])
+    openNotificationWithIcon();
+  };
+
+  const propsPopconfirm = {
+    title: "Eliminar Genero.",
+    description: "¿Está seguro de eliminar este género?",
+    onConfirm: confirm,
+    okText: "Eliminar",
+    icon: <DeleteOutlined style={{ color: 'red' }} />,
+    okButtonProps: {className: 'bg-red-600'},
+  }
+
   return (
     <List
       itemLayout="horizontal"
-      dataSource={data}
-      renderItem={(item, index) => (
+      dataSource={generos}
+      renderItem={(item) => (
         <List.Item
-          actions={[<Link to={`/generos/editar/${index}`} className="text-indigo-600">Editar</Link>, <a key="list-loadmore-more" className="text-red-600">Eliminar</a>]}
+          actions={[<Link to={`/generos/editar/${item.id}`} className="text-indigo-600">Editar</Link>,
+                     <Popconfirm {...propsPopconfirm}>
+                        <a onClick={() => setGenero(item)} className="text-red-600">Eliminar</a>
+                     </Popconfirm>]}
         >
           <List.Item.Meta
             avatar={<IconMasksTheater />}
-            title={<a href="https://ant.design">{item.title}</a>}
-            description={`Genero ${index}`} />
-        </List.Item>)} />
+            title={<Link to={`/generos/editar/${item.id}`}>{item.nombre}</Link>}
+            description={item.descripcion} />
+        </List.Item>)}
+        pagination={{position: "bottom", align: "end", pageSize: 5}}
+      />
   )
+}
+
+interface listadoGenerosProps {
+  generos: genero[]
+  setGeneros: (generos: genero[]) => void
 }

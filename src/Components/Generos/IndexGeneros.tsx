@@ -1,36 +1,38 @@
-import { Button } from "antd";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import TituloGenerico from "../Utils/TituloGenerico";
 import css from '../Utils/custom.module.css';
 import CrearGenero from "./CrearGenero";
-import { generoDTO } from "./Generos.model";
+import { genero, generoDTO } from "./Generos.model";
 import ListadoGeneros from "./ListadoGeneros";
 
 export default function IndexGeneros() {
 
   const [open, setOpen] = useState(false);
+  const [generos, setGeneros] = useState<genero[]>([]);
 
-  const onCreate = (values: generoDTO) => {
-    console.log('Received values of form Creating: ', values);
-    setOpen(false);
-  };
+  const cargarGeneros = async () => {
+    const data = await axios.get<genero[]>(`${import.meta.env.VITE_API_URL}/generos/GetGeneros`);
+    setGeneros(data.data)
+  }
 
-  const onCancel = () => {
-    setOpen(false);
+  useEffect(() => {
+    cargarGeneros();
+  }, [])
+
+  const accion = () => {
+    setOpen(true);
   }
 
   return (
     <>
-      <div className="flex justify-between mt-5">
-        <Button className={`${css.buttonLikeAntD} order-last me-3`} onClick={() => {setOpen(true)}}>Crear Género</Button>
-        <h3 className="text-3xl font-bold text-indigo-500 order-2">Géneros</h3>
-        <p></p>
-      </div>
+      <TituloGenerico titulo="Género" accion={accion} buttonText="Crear Género" />
 
-      <CrearGenero open={open} onAction={onCreate} onCancel={onCancel} />
+      <CrearGenero open={open} setOpen={setOpen} generos={generos} setGeneros={setGeneros} />
 
       <div className="p-3">
         <div className={`${css.containerWhite}`}>
-          <ListadoGeneros />
+          <ListadoGeneros generos={generos} setGeneros={setGeneros} />
         </div>
       </div>
     </>

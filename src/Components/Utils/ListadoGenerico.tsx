@@ -15,6 +15,7 @@ export default function ListadoGenerico(props: listadoGenericoProps) {
     }
 
     return <>No hay elementos para mostrar</>
+    
   }else{
     return props.children;
   }

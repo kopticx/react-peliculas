@@ -1,0 +1,4 @@
+.mapa {
+    @apply w-full bg-blue-500;
+    height: 300px;
+}

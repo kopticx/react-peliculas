@@ -5,24 +5,16 @@ import { genero } from "./Generos.model";
 import axios from "axios";
 import { useState } from "react";
 import { DeleteOutlined } from "@ant-design/icons";
+import { notificacionSuccess } from "../Utils/Notificaciones";
 
-export default function ListadoGeneros({generos, setGeneros}: listadoGenerosProps) {
+export default function ListadoGeneros({generos}: listadoGenerosProps) {
 
   const [genero, setGenero] = useState<genero>();
 
-  const openNotificationWithIcon = () => {
-    notification.success({
-      message: "Género eliminado",
-      description: "El género se elimino correctamente.",
-      placement: "bottomRight",
-      duration: 3,
-    });
-  }
-
   const confirm = async () => {
-    await axios.delete(`${import.meta.env.VITE_API_URL}/generos/DeleteGenero/${genero?.id}`);
-    setGeneros([...generos.filter(x => x.id !== genero?.id)])
-    openNotificationWithIcon();
+    // await axios.delete(`${import.meta.env.VITE_API_URL}/generos/DeleteGenero/${genero?.id}`);
+    // setGeneros([...generos.filter(x => x.id !== genero?.id)])
+    notificacionSuccess({message: "Género eliminado", description: "El género se elimino correctamente."});
   };
 
   const propsPopconfirm = {
@@ -57,5 +49,4 @@ export default function ListadoGeneros({generos, setGeneros}: listadoGenerosProp
 
 interface listadoGenerosProps {
   generos: genero[]
-  setGeneros: (generos: genero[]) => void
 }

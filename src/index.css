@@ -12,6 +12,10 @@
     @apply text-4xl font-bold text-indigo-500 mb-5;
 }
 
+.subtitle {
+    @apply text-2xl font-bold text-indigo-500 mb-2;
+}
+
 .button-Ant {
     @apply text-sm text-white h-8 rounded-md px-4 py-1 hover:text-white;
     background: #1677ff;

@@ -1,30 +1,59 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TituloGenerico from "../Utils/TituloGenerico";
 import FormularioPeliculas from "./FormularioPeliculas";
 import { peliculaFormularioDTO } from "./Peliculas.model";
 import dayjs from "dayjs";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks/useTypedSelectors";
+import { useEffect } from "react";
+import { getPelicula, putPelicula } from "../../redux/slices/peliculaSlice";
+import { selectedCinesDTO } from "../Cines/Cines.model";
+import { selectedActoresDTO } from "../Actores/Actores.model";
+import { peliculaToFormData } from "./PeliculaUtils";
+import { notificacionError, notificacionSuccess } from "../Utils/Notificaciones";
 
 export default function EditarPelicula() {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const {id}: any = useParams();
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
+  useEffect(() => {
+    dispatch(getPelicula(id))
+  }, [id]);
+
+  const { pelicula } = useAppSelector((state) => state.peliculas);
+
+  const modelo: peliculaFormularioDTO = {
+    ...pelicula,
+    fechaEstreno: dayjs(pelicula.fechaEstreno),
+    generos: pelicula.generos.map(genero => genero.id),
+    cines: pelicula.cines.map((cine)  => String(cine.id)),
+    actores: pelicula.actores.map((actor): selectedActoresDTO => ({id: actor.id, personaje: actor.personaje}))
+  }
+
+  const onFinish = async (values: any) => {
+    values = {
+      ...values,
+      poster: values.poster?.[0].originFileObj  
+    }
+
+    const data = peliculaToFormData(values);
+    
+    const response = await dispatch(putPelicula({id, pelicula: data}));
+
+    if(response.meta.requestStatus === 'fulfilled'){
+      notificacionSuccess({message: 'Pelicula editada', description: 'La pelicula se editó correctamente'})
+    }
+    
+    if(response.meta.requestStatus === 'rejected'){
+      notificacionError({message: 'No se pudo editar la pelicula', description: 'Error al intentar editar la pelicula'})
+    }
+
+    return navigate(`/pelicula/${id}`)
   };
 
   const accion = () => {
     navigate(-1);
   };
-
-  const modelo: peliculaFormularioDTO = {
-    titulo: "SPIDER-MAN: SIN CAMINO A CASA",
-    enCines: true,
-    trailer: "https://www.youtube.com/watch?v=r6t0czGbuGI",
-    fechaLanzamiento: dayjs(),
-    posterUrl: 'https://http2.mlstatic.com/D_NQ_NP_799595-MLM48347647812_112021-O.jpg',
-    generos: [1, 2],
-    actores: ["1", "2"],
-    cines: ["1", "2"]
-  }
 
   return (
     <>
@@ -35,7 +64,10 @@ export default function EditarPelicula() {
       />
 
       <div className="div-center">
-        <FormularioPeliculas onFinish={onFinish} buttonName="Editar" modelo={modelo} />
+        {
+          pelicula.id &&
+          <FormularioPeliculas onFinish={onFinish} buttonName="Editar" modelo={modelo} />
+        }
       </div>
 
       </>

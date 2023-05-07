@@ -1,15 +1,17 @@
 import axios from "axios";
 import FormularioCreacionGeneros from "./FormularioCreacionGenero";
-import { genero, generoDTO } from "./Generos.model";
+import { genero, generoCreacionDTO } from "./Generos.model";
 import { redirect } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks/useTypedSelectors";
+import { postGenero } from "../../redux/slices/generoSlice";
 
-export default function CrearGenero({ open, setOpen, generos, setGeneros }: crearGeneroProps) {
+export default function CrearGenero({ open, setOpen }: crearGeneroProps) {
 
-  const onCreate = async (values: generoDTO) => {
+  const dispatch = useAppDispatch();
+
+  const onCreate = async (values: generoCreacionDTO) => {
     
-    const respuesta = await axios.post<genero>(`${import.meta.env.VITE_API_URL}/generos/postGenero`, values)
-    
-    setGeneros([...generos, respuesta.data]);
+    dispatch(postGenero(values));
 
     setOpen(false);
   };
@@ -26,6 +28,4 @@ export default function CrearGenero({ open, setOpen, generos, setGeneros }: crea
 interface crearGeneroProps {
   open: boolean
   setOpen: (open: boolean) => void
-  generos: genero[]
-  setGeneros: (generos: genero[]) => void
 }

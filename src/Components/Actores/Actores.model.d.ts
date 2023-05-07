@@ -16,7 +16,19 @@ export interface actoresFormularioDTO {
     foto: File;
 }
 
-export interface actoresTransferDTO {
-    key: string;
+interface actorPeliculaDTO {
+    id: number;
     nombre: string;
+    foto: string;
+    personaje: string;
+}
+
+export type selectActorDTO = {
+    id: number;
+    nombre: string;
+}
+
+export type selectedActoresDTO = {
+    id: number;
+    personaje: string;
 }

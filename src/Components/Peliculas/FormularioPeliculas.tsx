@@ -1,4 +1,8 @@
-import { UploadOutlined } from "@ant-design/icons";
+import {
+  MinusCircleOutlined,
+  PlusOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import { IconRating12Plus, IconUser } from "@tabler/icons-react";
 import { Button, Checkbox, DatePicker, Form, Image, Input,
          Select, Transfer, Upload, UploadFile } from "antd";
@@ -7,60 +11,70 @@ import { useNavigate } from "react-router-dom";
 import { peliculaFormularioDTO } from "./Peliculas.model";
 import { selectGeneroDTO } from "../Generos/Generos.model";
 import { cinesTransferDTO } from "../Cines/Cines.model";
-import { actoresTransferDTO } from "../Actores/Actores.model";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../redux/hooks/useTypedSelectors";
+import { getCines } from "../../redux/slices/cineSlice";
+import { getGeneros } from "../../redux/slices/generoSlice";
+import { getActores } from "../../redux/slices/actorSlice";
+import { selectActorDTO } from "../Actores/Actores.model";
 
-export default function FormularioPeliculas({ modelo, onFinish, buttonName }: formularioPeliculasProps) {
+export default function FormularioPeliculas({
+  modelo,
+  onFinish,
+  buttonName,
+}: formularioPeliculasProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getCines());
+    dispatch(getGeneros());
+    dispatch(getActores());
+  }, []);
+
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [visible, setVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState<string>("");
 
   //!Cines
-  const [targetKeysCines, setTargetKeysCines] = useState<string[]>(modelo?.cines || []);
+  const [targetKeysCines, setTargetKeysCines] = useState<string[]>(
+    modelo?.cines.map((x) => x) || []
+  );
   const [selectedKeysCines, setSelectedKeysCines] = useState<string[]>([]);
+  const { cines } = useAppSelector((state) => state.cines);
 
   //* Opcines del transfer de cines
-  const cines: cinesTransferDTO[] = [
-    { key: "1", nombre: "Cinepolis" },
-    { key: "2", nombre: "Cine Kevin" },
-    { key: "3", nombre: "Cine 3" },
-    { key: "4", nombre: "Cine 4" },
-  ]
+  const transferCines: cinesTransferDTO[] = cines.map((cine) => {
+    return { key: cine.id?.toString(), nombre: cine.nombre };
+  });
 
   const handleChangeCines = (newTargetKeys: string[]) => {
     setTargetKeysCines(newTargetKeys);
   };
 
-  const handleSelectChangeCines = (sourceSelectedKeys: string[], targetSelectedKeys: string[]) => {
+  const handleSelectChangeCines = (
+    sourceSelectedKeys: string[],
+    targetSelectedKeys: string[]
+  ) => {
     setSelectedKeysCines([...sourceSelectedKeys, ...targetSelectedKeys]);
   };
   //!endCines
 
   //! Actores
-    const [targetKeysActores, setTargetKeysActores] = useState<string[]>(modelo?.actores || []);
-    const [selectedKeysActores, setSelectedKeysActores] = useState<string[]>([]);
-
-    //* Opcines del transfer de actores
-    const actores: actoresTransferDTO[] = [
-        { key: "1", nombre: "Actor 1" },
-        { key: "2", nombre: "Actor 2" },
-        { key: "3", nombre: "Actor 3" },
-        { key: "4", nombre: "Actor 4" },
-    ]
-
-    const handleChangeActores = (newTargetKeys: string[]) => {
-        setTargetKeysActores(newTargetKeys);
-    };
-
-    const handleSelectChangeActores = (sourceSelectedKeys: string[], targetSelectedKeys: string[]) => {
-        setSelectedKeysActores([...sourceSelectedKeys, ...targetSelectedKeys]);
-    };
+  const { actores } = useAppSelector((state) => state.actores);
+  const actoresSelect: selectActorDTO[] = actores.map((actor) => {
+    return { id: actor.id, nombre: actor.nombre };
+  });
   //!endActores
-
 
   //* Seteamos la imagen de preview si tenemos una imagen en el modelo
   useEffect(() => {
-    setPreviewImage( modelo?.posterUrl || "https://cdn-icons-png.flaticon.com/512/2281/2281284.png");
+    setPreviewImage(
+      modelo?.posterUrl ||
+        "https://cdn-icons-png.flaticon.com/512/2281/2281284.png"
+    );
   }, []);
 
   //* Funcion para convertir la imagen a base64
@@ -110,11 +124,10 @@ export default function FormularioPeliculas({ modelo, onFinish, buttonName }: fo
   ];
 
   //* Opciones del Select de generos
-  const options: selectGeneroDTO[] = [
-    { id: 1, nombre: "Comedia" },
-    { id: 2, nombre: "Drama" },
-    { id: 3, nombre: "Accion" },
-  ];
+  const { generos } = useAppSelector((state) => state.generos);
+  const generosSelect: selectGeneroDTO[] = generos.map((genero) => {
+    return { id: genero.id, nombre: genero.nombre };
+  });
 
   return (
     <div className="flex gap-24">
@@ -189,13 +202,34 @@ export default function FormularioPeliculas({ modelo, onFinish, buttonName }: fo
           </Form.Item>
 
           <Form.Item className="mb-1">
-            <div className="label">Fecha de lanzamiento: </div>
+            <div className="label">Resumen</div>
 
-            <Form.Item name="fechaLanzamiento">
+            <Form.Item
+              name="resumen"
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese el resumen de la pelicula.",
+                },
+              ]}
+            >
+              <Input.TextArea
+                autoSize
+                rows={2}
+                placeholder="Resumen de la pelicula"
+                allowClear
+              />
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item className="mb-1">
+            <div className="label">Fecha de estreno: </div>
+
+            <Form.Item name="fechaEstreno">
               <DatePicker
                 className="w-full"
                 format={"DD/MM/YYYY"}
-                placeholder="Fecha de lanzamiento"
+                placeholder="Fecha de estreno"
               />
             </Form.Item>
           </Form.Item>
@@ -213,12 +247,16 @@ export default function FormularioPeliculas({ modelo, onFinish, buttonName }: fo
               ]}
             >
               <Select
+                showSearch
                 mode="multiple"
                 fieldNames={{ label: "nombre", value: "id" }}
                 allowClear
                 style={{ width: "100%" }}
                 placeholder="Please select"
-                options={options}
+                options={generosSelect}
+                filterOption={(input, option) =>
+                  option!.nombre.toLowerCase().includes(input.toLowerCase())
+                }
               />
             </Form.Item>
           </Form.Item>
@@ -236,7 +274,7 @@ export default function FormularioPeliculas({ modelo, onFinish, buttonName }: fo
               ]}
             >
               <Transfer
-                dataSource={cines}
+                dataSource={transferCines}
                 showSearch
                 titles={["Disponibles", "Seleccionados"]}
                 targetKeys={targetKeysCines}
@@ -250,34 +288,83 @@ export default function FormularioPeliculas({ modelo, onFinish, buttonName }: fo
             </Form.Item>
           </Form.Item>
 
-          <Form.Item className="mb-1">
-            <div className="label">Actores</div>
-
-            <Form.Item
-              name="actores"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor seleccione al menos un actor.",
+          <Form.List
+            name="actores"
+            rules={[
+              {
+                validator: async (_, actores) => {
+                  if (!actores || actores.length < 1) {
+                    return Promise.reject(new Error('Al menos un actor'));
+                  }
                 },
-              ]}
-            >
-              <Transfer
-                dataSource={actores}
-                showSearch
-                titles={["Disponibles", "Seleccionados"]}
-                targetKeys={targetKeysActores}
-                selectedKeys={selectedKeysActores}
-                onChange={handleChangeActores}
-                onSelectChange={handleSelectChangeActores}
-                render={(item) => item.nombre}
-                oneWay
-                pagination
-              />
-            </Form.Item>
-          </Form.Item>
+              },
+            ]}
+          >
+            {(fields, { add, remove }, {errors}) => (
+              <>
+                {fields.map(({ key, name, ...restField }) => (
+                  <Form.Item key={key} className="w-full -mb-7">
+                    <div className="flex gap-5">
+                      <Form.Item className="w-1/2">
+                        <div className="label">Actor</div>
 
-          <Form.Item className="mb-1">
+                        <Form.Item {...restField} name={[name, "id"]}>
+                          <Select
+                            showSearch
+                            fieldNames={{ label: "nombre", value: "id" }}
+                            allowClear
+                            placeholder="Please select"
+                            options={actoresSelect}
+                            filterOption={(input, option) =>
+                              option!.nombre
+                                .toLowerCase()
+                                .includes(input.toLowerCase())
+                            }
+                          />
+                        </Form.Item>
+                      </Form.Item>
+
+                      <Form.Item className="w-1/2">
+                        <div className="label">Nombre Personaje</div>
+
+                        <Form.Item
+                          {...restField}
+                          name={[name, "personaje"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "El nombre del personaje es requerido",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Nombre Personaje" />
+                        </Form.Item>
+                      </Form.Item>
+
+                      <Form.Item className="w-1/8">
+                        <MinusCircleOutlined
+                          className="mt-7"
+                          onClick={() => remove(name)}
+                        />
+                      </Form.Item>
+                    </div>
+                  </Form.Item>
+                ))}
+
+                <Form.Item>
+                  <Button type="dashed" onClick={() => add()} block>
+                    <PlusOutlined /> Agregar Personaje
+                  </Button>
+                </Form.Item>
+
+                <Form.Item className="-mt-6">
+                  <Form.ErrorList className="text-red-500" errors={errors} />
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+
+          <Form.Item className="-mt-7 mb-1">
             <div className="label">Poster: </div>
 
             <Form.Item
@@ -322,6 +409,6 @@ export default function FormularioPeliculas({ modelo, onFinish, buttonName }: fo
 
 interface formularioPeliculasProps {
   modelo?: peliculaFormularioDTO;
-  onFinish(valores: peliculaFormularioDTO): void;
+  onFinish(valores: any): void;
   buttonName: string;
 }

@@ -35,9 +35,6 @@ export default function EditarActor() {
       foto: values.foto?.[0].originFileObj  
     }
 
-    console.log(values);
-    
-
     const data = actorToFormData(values);
 
     await axios({

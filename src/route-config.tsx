@@ -13,6 +13,7 @@ import CrearPelicula from "./Components/Peliculas/CrearPelicula";
 import EditarPelicula from "./Components/Peliculas/EditarPelicula";
 import FiltroPeliculas from "./Components/Peliculas/FiltroPeliculas/FiltroPeliculas";
 import NotFound from "./Components/Utils/NotFound";
+import DetallePelicula from "./Components/Peliculas/DetallePelicula";
 
 export const rutas = createBrowserRouter([
   {
@@ -29,12 +30,16 @@ export const rutas = createBrowserRouter([
         element: <CrearPelicula />
       },
       {
-        path: "/peliculas/editar/:id",
+        path: "/pelicula/editar/:id",
         element: <EditarPelicula />
       },
       {
         path: "/peliculas/filtrar",
         element: <FiltroPeliculas />
+      },
+      {
+        path: "/pelicula/:id",
+        element: <DetallePelicula />
       },
       //Generos
       {

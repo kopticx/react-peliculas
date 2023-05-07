@@ -4,12 +4,17 @@ export interface genero {
     descripcion: string;
 }
 
-export interface selectGeneroDTO {
+export type selectGeneroDTO = {
     id: number;
     nombre: string;
 }
 
-export interface generoDTO {
+export interface generoCreacionDTO {
     nombre: string;
     descripcion: string;
+}
+
+export interface generoDTO {
+    id: number;
+    nombre: string;
 }

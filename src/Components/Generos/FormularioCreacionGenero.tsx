@@ -1,6 +1,6 @@
 import { IconMasksTheater } from "@tabler/icons-react";
 import { Form, Input, Modal } from "antd";
-import { generoDTO } from "./Generos.model";
+import { generoCreacionDTO } from "./Generos.model";
 
 export default function FormularioCreacionGeneros({
   open,
@@ -64,6 +64,6 @@ export default function FormularioCreacionGeneros({
 
 interface GeneroFormProps {
   open: boolean;
-  onAction: (values: generoDTO) => void;
+  onAction: (values: generoCreacionDTO) => void;
   onCancel: () => void;
 }

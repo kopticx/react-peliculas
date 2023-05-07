@@ -1,20 +1,53 @@
-import dayjs from "dayjs";
+import { Dayjs } from "dayjs";
+import { actorPeliculaDTO, selectedActoresDTO } from "../Actores/Actores.model";
+import { cineDTO, selectedCinesDTO } from "../Cines/Cines.model";
+import { generoDTO, selectedGeneroDTO } from "../Generos/Generos.model";
 
 export interface pelicula {
     id: number;
     titulo: string;
-    poster: string;
+    resumen: string;
+    trailer: string;
+    enCines: boolean;
+    fechaEstreno: Dayjs;
+    posterUrl: string;
+    generos: generoDTO[];
+    actores: actorPeliculaDTO[];
+    cines: cineDTO[];
 }
 
-export interface peliculaFormularioDTO {
+export interface peliculaDTO {
+    id: number;
     titulo: string;
+    resumen: string;
+    trailer: string;
+    enCines: boolean;
+    fechaEstreno: Dayjs;
+    posterUrl: string;
+}
+
+export type peliculaFormularioDTO = {
+    titulo: string;
+    resumen: string;
     enCines: boolean;
     trailer: string;
-    fechaLanzamiento?: dayjs;
+    fechaEstreno: dayjs;
     posterUrl?: string;
-    generos?: selectGeneroDTO[];
-    cines?: cinesTransferDTO[];
-    actores?: actoresTransferDTO[];
+    generos: number[];
+    cines: string[];
+    actores: selectedActoresDTO[];
+}
+
+export interface peliculaPostDTO {
+    titulo: string;
+    resumen: string;
+    enCines: boolean;
+    trailer: string;
+    fechaEstreno: dayjs;
+    poster: File;
+    generos: number[];
+    cines: string[];
+    actores: actorPeliculaDTO[];
 }
 
 export interface landingPageDTO {

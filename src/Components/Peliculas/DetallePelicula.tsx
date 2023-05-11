@@ -17,8 +17,6 @@ export default function DetallePelicula() {
   const dispatch = useAppDispatch();
   const { pelicula } = useAppSelector((state) => state.peliculas);
 
-  console.log(pelicula);
-
   useEffect(() => {
     dispatch(getPelicula(id));
   }, [id]);
@@ -79,7 +77,7 @@ export default function DetallePelicula() {
       </div>
 
       <div className="mt-4 w-1/2">
-        <h3 className="subtitle">Resumen</h3>
+        <h3 className="subtitle">Sinopsis</h3>
         <p className="mb-2 font-semibold">{pelicula.resumen}</p>
       </div>
 

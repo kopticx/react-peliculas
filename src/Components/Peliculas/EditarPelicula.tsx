@@ -16,11 +16,11 @@ export default function EditarPelicula() {
     const dispatch = useAppDispatch();
     const {id}: any = useParams();
 
-  useEffect(() => {
-    dispatch(getPelicula(id))
-  }, [id]);
-
-  const { pelicula } = useAppSelector((state) => state.peliculas);
+    const { pelicula } = useAppSelector((state) => state.peliculas);
+    
+    useEffect(() => {
+      dispatch(getPelicula(id))
+    }, [pelicula]);
 
   const modelo: peliculaFormularioDTO = {
     ...pelicula,

@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import TituloGenerico from "../Utils/TituloGenerico";
 import MapView from "./MapView";
  
-mapboxgl.accessToken = 'pk.eyJ1Ijoia29wdGljeCIsImEiOiJjbGdxNGpreHAxNXkxM2VqcWJyczQ2ZmFiIn0.pgsytqCJ5SQIzNempqGysw';
-
 export default function IndexCines() {
 
   const navigate = useNavigate();

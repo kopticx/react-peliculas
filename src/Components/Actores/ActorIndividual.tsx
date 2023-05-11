@@ -1,5 +1,5 @@
 import { Card, Popconfirm } from "antd";
-import { actor } from "./Actores.model";
+import { actorDTO } from "./Actores.model";
 import Meta from "antd/es/card/Meta";
 import css from "./Actores.module.css";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -42,8 +42,8 @@ export default function ActorIndividual({actor}: actorIndividualProps) {
   }
 
   const popConfirmProps = {
-    title:"Delete the task",
-    description:"Are you sure to delete this task?",
+    title:"Eliminar actor",
+    description:"¿Está seguro que desea eliminar el actor?",
     open,
     onConfirm: confirm,
     onCancel: cancel,
@@ -69,5 +69,5 @@ export default function ActorIndividual({actor}: actorIndividualProps) {
 }
 
 interface actorIndividualProps {
-    actor: actor;
+    actor: actorDTO;
 }

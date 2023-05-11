@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { peliculaState } from "../models/reduxStates.model";
 import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
-import { landingPageDTO, pelicula, peliculaDTO } from "../../Components/Peliculas/Peliculas.model";
+import { filtroPeliculasForm, landingPageDTO, peliculaDTO } from "../../Components/Peliculas/Peliculas.model";
 
 const initialState: peliculaState = {
     peliculas: [],
@@ -14,12 +14,13 @@ const initialState: peliculaState = {
         resumen: '',
         enCines: false,
         trailer: '',
-        fechaEstreno: dayjs(),
+        fechaEstreno: undefined,
         posterUrl: '',
         generos: [],
         cines: [],
         actores: [],
     },
+    peliculasFiltro: [],
     error: ''
 }
 
@@ -36,6 +37,15 @@ export const getPelicula = createAsyncThunk(
     'pelicula/getPelicula',
     async (id: number) => {
         const data = await axios.get<peliculaDTO>(`${import.meta.env.VITE_API_URL}/peliculas/getPelicula/${id}`);
+
+        return data.data;
+    }
+);
+
+export const filtrarPeliculas = createAsyncThunk(
+    'pelicula/filtrarPeliculas',
+    async (valores: filtroPeliculasForm) => {
+        const data = await axios.get<peliculaDTO[]>(`${import.meta.env.VITE_API_URL}/peliculas/filtrar`, {params: valores});
 
         return data.data;
     }
@@ -62,7 +72,14 @@ export const putPelicula = createAsyncThunk(
             data: pelicula,
             headers: {'Content-Type': 'multipart/form-data' }
         });
-    })
+});
+
+export const deletePelicula = createAsyncThunk(
+    'pelicula/deletePelicula',
+    async (id: number) => {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/peliculas/deletePelicula/${id}`);
+    }
+);
 
 export const peliculaSlice = createSlice({
     name: 'pelicula',
@@ -102,6 +119,20 @@ export const peliculaSlice = createSlice({
             }
         },
         [putPelicula.rejected.type]: (state, action) => {
+            state.error = action.error.message!;
+        },
+        //Delete Pelicula
+        [deletePelicula.fulfilled.type]: (state, action) => {
+            state.peliculas = state.peliculas.filter(pelicula => pelicula.id !== action.payload);
+        },
+        [deletePelicula.rejected.type]: (state, action) => {
+            state.error = action.error.message!;
+        },
+        //Filtrar Peliculas
+        [filtrarPeliculas.fulfilled.type]: (state, action) => {
+            state.peliculasFiltro = action.payload;
+        },
+        [filtrarPeliculas.rejected.type]: (state, action) => {
             state.error = action.error.message!;
         }
     }

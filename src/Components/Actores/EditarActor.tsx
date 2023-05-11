@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { actor, actoresFormularioDTO } from "./Actores.model";
+import { actorDTO, actoresFormularioDTO } from "./Actores.model";
 import TituloGenerico from "../Utils/TituloGenerico";
 import FormularioActores from "./FormularioActores";
 import dayjs from "dayjs";
@@ -10,13 +10,13 @@ import { actorToFormData } from "./ActorUtils";
 
 export default function EditarActor() {
 
-  const [actor, setActor] = useState<actor>();
+  const [actor, setActor] = useState<actorDTO>();
 
   const navigate = useNavigate();
   const params = useParams();
 
   const obtenerActor = async () => {
-    await axios.get<actor>(`${import.meta.env.VITE_API_URL}/actores/getActor/${params.id}`)
+    await axios.get<actorDTO>(`${import.meta.env.VITE_API_URL}/actores/getActor/${params.id}`)
       .then((response) => 
             { 
               response.data = {...response.data, fechaNacimiento: dayjs(response.data.fechaNacimiento)}; 

@@ -20,13 +20,12 @@ import { getGeneros } from "../../redux/slices/generoSlice";
 import { getActores } from "../../redux/slices/actorSlice";
 import { selectActorDTO } from "../Actores/Actores.model";
 
-export default function FormularioPeliculas({
-  modelo,
-  onFinish,
-  buttonName,
-}: formularioPeliculasProps) {
+
+export default function FormularioPeliculas({ modelo, onFinish, buttonName }: formularioPeliculasProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const [form] = Form.useForm();
 
   useEffect(() => {
     dispatch(getCines());
@@ -37,6 +36,7 @@ export default function FormularioPeliculas({
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [visible, setVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
 
   //!Cines
   const [targetKeysCines, setTargetKeysCines] = useState<string[]>(
@@ -64,9 +64,13 @@ export default function FormularioPeliculas({
 
   //! Actores
   const { actores } = useAppSelector((state) => state.actores);
-  const actoresSelect: selectActorDTO[] = actores.map((actor) => {
+  let actoresSelect: selectActorDTO[] = actores.map((actor) => {
     return { id: actor.id, nombre: actor.nombre };
   });
+
+  const onChangeActores = (value: any) => {
+    actoresSelect = actoresSelect.filter((actor) => actor.id !== value);
+  }
   //!endActores
 
   //* Seteamos la imagen de preview si tenemos una imagen en el modelo
@@ -143,6 +147,7 @@ export default function FormularioPeliculas({
 
       <div className="w-3/4">
         <Form
+          form={form}
           initialValues={modelo}
           wrapperCol={{ offset: 2, span: 22 }}
           className="w-full"
@@ -320,6 +325,7 @@ export default function FormularioPeliculas({
                                 .toLowerCase()
                                 .includes(input.toLowerCase())
                             }
+                            onChange={onChangeActores}
                           />
                         </Form.Item>
                       </Form.Item>
@@ -387,6 +393,7 @@ export default function FormularioPeliculas({
 
           <Form.Item>
             <Button
+              loading={uploading}
               className="button-Ant me-2"
               type="primary"
               htmlType="submit"

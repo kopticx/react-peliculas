@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { actorState } from "../models/reduxStates.model";
 import axios from "axios";
+import { actor } from "../../Components/Actores/Actores.model";
 
 const initialState: actorState = {
     actores: [],
@@ -10,7 +11,7 @@ const initialState: actorState = {
 export const getActores = createAsyncThunk(
     'actor/getActores',
     async () => {
-        const data = await axios.get(`${import.meta.env.VITE_API_URL}/actores/getActores`);
+        const data = await axios.get<actor>(`${import.meta.env.VITE_API_URL}/actores/getActores`);
 
         return data.data;
     }

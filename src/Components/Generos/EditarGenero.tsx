@@ -1,11 +1,13 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormularioEditarGenero from "./FormularioEditarGenero";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { genero } from "./Generos.model";
+import TituloGenerico from "../Utils/TituloGenerico";
 
 export default function EditarGenero() {
 
+  const navigate = useNavigate();
   const params = useParams();
   const [genero, setGenero] = useState<genero>();
 
@@ -19,9 +21,14 @@ export default function EditarGenero() {
     cargarGenero();
   }, [])
 
+  const accion = () => {
+    navigate(-1);
+  };
+
   return (
     <>
-    {genero ? <FormularioEditarGenero genero={genero} /> : <></>}
+      <TituloGenerico titulo="Editar Género" buttonText="Volver" accion={accion}/>
+      {genero ? <FormularioEditarGenero genero={genero} /> : <></>}
     </>
   );
 }

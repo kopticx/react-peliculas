@@ -1,0 +1,8 @@
+.bgInputs input {
+    --tw-bg-opacity: 1;
+    background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
+.labelInputs {
+    @apply block mb-1 text-sm font-medium text-gray-900;
+}

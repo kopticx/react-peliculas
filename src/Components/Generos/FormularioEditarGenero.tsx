@@ -22,8 +22,6 @@ export default function FormularioEditarGenero({genero} : formularioEditarGenero
 
   return (
     <div className="div-center">
-      <h4 className="title">Editar Género</h4>
-
       <Form
         initialValues={genero}
         className="w-full"

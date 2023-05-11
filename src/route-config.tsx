@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import Layout from "./Components/Layout";
 import LandingPage from "./Components/LandingPage";
 import IndexGeneros from "./Components/Generos/IndexGeneros";
@@ -7,79 +7,69 @@ import IndexActores from "./Components/Actores/IndexActores";
 import CrearActor from "./Components/Actores/CrearActor";
 import EditarActor from "./Components/Actores/EditarActor";
 import IndexCines from "./Components/Cines/IndexCines";
-import CrearCine from "./Components/Cines/CrearCine";
-import EditarCine from "./Components/Cines/EditarCine";
-import CrearPelicula from "./Components/Peliculas/CrearPelicula";
-import EditarPelicula from "./Components/Peliculas/EditarPelicula";
-import FiltroPeliculas from "./Components/Peliculas/FiltroPeliculas/FiltroPeliculas";
 import NotFound from "./Components/Utils/NotFound";
+import PrivateRoute from "./Components/Auth/PrivateRoute";
+import PrivateCinesRoute from "./Rutas/PrivateCinesRoute";
+import FiltroPeliculas from "./Components/Peliculas/FiltroPeliculas/FiltroPeliculas";
 import DetallePelicula from "./Components/Peliculas/DetallePelicula";
+import PrivatePeliculasRoute from "./Rutas/PrivatePeliculasRoute";
+import SignIn from "./Components/Auth/Signin";
+import Login from "./Components/Auth/Login";
 
-export const rutas = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      //Pelidculas
-      {
-        index: true,
-        element: <LandingPage />,
-      },
-      {
-        path: "/peliculas/crear",
-        element: <CrearPelicula />
-      },
-      {
-        path: "/pelicula/editar/:id",
-        element: <EditarPelicula />
-      },
-      {
-        path: "/peliculas/filtrar",
-        element: <FiltroPeliculas />
-      },
-      {
-        path: "/pelicula/:id",
-        element: <DetallePelicula />
-      },
-      //Generos
-      {
-        path: "/generos",
-        element: <IndexGeneros />
-      },
-      {
-        path: "/generos/editar/:id",
-        element: <EditarGenero />
-      },
-      //Actores
-      {
-        path: "/actores",
-        element: <IndexActores />
-      },
-      {
-        path: "/actores/crear",
-        element: <CrearActor />
-      },
-      {
-        path: "/actores/editar/:id",
-        element: <EditarActor />
-      },
-      //Cines
-      {
-        path: "/cines",
-        element: <IndexCines />
-      },
-      {
-        path: "/cines/crear",
-        element: <CrearCine/>
-      },
-      {
-        path: "/cines/editar/:id",
-        element: <EditarCine />
-      },
-      {
-        path: "*",
-        element: <NotFound />
-      }
-    ],
-  },
-]);
+export const rutas = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      //Auth
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/login" element={<Login />} />
+
+      //Rutas publicas
+      <Route path="/" element={<Layout />}>
+        <Route index element={<LandingPage />} />
+        //Peliculas
+        <Route path="/peliculas/filtrar" element={<FiltroPeliculas />} />
+        <Route path="/pelicula/:id" element={<DetallePelicula />} />
+        <Route
+          path="/pelicula/*"
+          element={
+            <PrivateRoute role="admin">
+              <PrivatePeliculasRoute />
+            </PrivateRoute>
+          }
+        />
+
+        //Generos
+        <Route path="/generos" element={<IndexGeneros />} />
+        <Route
+          path="/generos/editar/:id"
+          element={
+            <PrivateRoute role="admin">
+              <EditarGenero />
+            </PrivateRoute>
+          }
+        />
+
+        //Cines
+        <Route path="/cines" element={<IndexCines />} />
+        <Route
+          path="/cines/*"
+          element={
+            <PrivateRoute role="admin">
+              <PrivateCinesRoute />
+            </PrivateRoute>
+          }
+        />
+
+        //Actores
+        <Route path="/actores" element={<IndexActores />} />
+        <Route path="/actores/*" element={
+          <PrivateRoute role="admin">
+            <Route path="crear" element={<CrearActor />} />
+          </PrivateRoute>
+        } />
+
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </>
+  )
+);

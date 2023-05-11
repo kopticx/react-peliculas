@@ -4,6 +4,14 @@ export interface actor {
     id: number;
     nombre: string;
     biografia: string;
+    fechaNacimiento?: Date;
+    fotoURL: string;
+}
+
+export interface actorDTO {
+    id: number;
+    nombre: string;
+    biografia: string;
     fechaNacimiento: Dayjs;
     fotoURL: string;
 }

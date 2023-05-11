@@ -3,7 +3,7 @@ import { IconUser } from "@tabler/icons-react";
 import { Button, DatePicker, Form, Image, Input, Upload, UploadFile, UploadProps } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { actor, actoresFormularioDTO } from "./Actores.model";
+import { actorDTO, actoresFormularioDTO } from "./Actores.model";
 import TextArea from "antd/es/input/TextArea";
 
 export default function FormularioActores(props: formularioActoresProps) {
@@ -188,7 +188,7 @@ export default function FormularioActores(props: formularioActoresProps) {
 }
 
 interface formularioActoresProps {
-  modelo?: actor;
+  modelo?: actorDTO;
   onFinish(valores: actoresFormularioDTO): void;
   buttonName: string;
 }

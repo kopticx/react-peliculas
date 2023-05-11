@@ -9,7 +9,7 @@ export interface pelicula {
     resumen: string;
     trailer: string;
     enCines: boolean;
-    fechaEstreno: Dayjs;
+    fechaEstreno?: Date;
     posterUrl: string;
     generos: generoDTO[];
     actores: actorPeliculaDTO[];
@@ -53,4 +53,11 @@ export interface peliculaPostDTO {
 export interface landingPageDTO {
     enCartelera?: pelicula[];
     proximosEstrenos?: pelicula[];
+}
+
+export interface filtroPeliculasForm {
+    titulo: string;
+    generoId?: number;
+    proximosEstrenos: boolean;
+    enCines: boolean;
 }

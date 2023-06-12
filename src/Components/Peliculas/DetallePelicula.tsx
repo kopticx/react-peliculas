@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   useAppDispatch,
   useAppSelector,
@@ -11,6 +11,7 @@ import Meta from "antd/es/card/Meta";
 import MapView from "../Cines/MapView";
 import { cineDTO } from "../Cines/Cines.model";
 import { Marker, Popup } from "mapbox-gl";
+import Rating from "../Utils/Rating";
 
 export default function DetallePelicula() {
   const { id }: any = useParams();
@@ -57,7 +58,12 @@ export default function DetallePelicula() {
         </Tag>
       ))}
 
-      <div className="flex gap-4 mt-4">
+      <div className="flex gap-3">
+        <h3 className="subtitle text-xl mt-1">Tu voto: </h3>
+        <Rating votoUsuario={pelicula.votoUsuario} />  
+      </div>
+
+      <div className="flex gap-5">
         <span>
           <img
             src={pelicula.posterUrl}
@@ -73,6 +79,7 @@ export default function DetallePelicula() {
           height={315}
           src={generarURLYoutube(pelicula.trailer)}
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
         ></iframe>
       </div>
 

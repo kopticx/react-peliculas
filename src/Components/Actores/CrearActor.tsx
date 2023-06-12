@@ -4,10 +4,13 @@ import FormularioActores from "./FormularioActores";
 import axios from "axios";
 import { notificacionError, notificacionSuccess } from "../Utils/Notificaciones";
 import { actorToFormData } from "./ActorUtils";
+import { useAppDispatch } from "../../redux/hooks/useTypedSelectors";
+import { createActor } from "../../redux/slices/actorSlice";
 
 export default function CrearActor() {
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const onFinish = async (values: any) => {
 
@@ -18,17 +21,8 @@ export default function CrearActor() {
 
     const data = actorToFormData(values);
 
-    await axios({
-      method: 'post',
-      url: `${import.meta.env.VITE_API_URL}/actores/postActor`,
-      data,
-      headers: {'Content-Type': 'multipart/form-data' }
-    })
-    .then(() => {
-      notificacionSuccess({message: "Actor creado", description: "El actor se creó correctamente."});
-      navigate(-1);
-    })
-    .catch(() => notificacionError({message: "Error al crear el actor", description: "Hubo un error al crear el actor."}));
+    await dispatch(createActor(data));
+    navigate('/')
   };
 
   const accion = () => {

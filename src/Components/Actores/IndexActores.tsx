@@ -1,26 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import TituloGenerico from "../Utils/TituloGenerico";
-import { useEffect, useState } from "react";
-import { actorDTO } from "./Actores.model";
-import axios from "axios";
-import { notificacionError } from "../Utils/Notificaciones";
-import ActorIndividual from "./ActorIndividual";
+import { useEffect } from "react";
 import ListadoActores from "./ListadoActores";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks/useTypedSelectors";
+import { getActores } from "../../redux/slices/actorSlice";
 
 export default function IndexActores() {
-
-  const [actores, setActores] = useState<actorDTO[]>();
-  
+  const dispatch = useAppDispatch();
+  const { actores } = useAppSelector((state) => state.actores)
   const navigate = useNavigate();
 
-  const obtenerActores = async () => {
-    await axios.get<actorDTO[]>(`${import.meta.env.VITE_API_URL}/actores/getActores`)
-          .then((response) => setActores(response.data))
-          .catch(() => notificacionError({message: "Error al obtener los actores", description: "Hubo un error al obtener los actores."}));
-  }
-
   useEffect(() => {
-    obtenerActores();
+    dispatch(getActores());
   }, [])
 
   const accion = () => {

@@ -14,6 +14,8 @@ export interface pelicula {
     generos: generoDTO[];
     actores: actorPeliculaDTO[];
     cines: cineDTO[];
+    votoUsuario?: number;
+    promedioVoto?: number;
 }
 
 export interface peliculaDTO {
@@ -51,8 +53,8 @@ export interface peliculaPostDTO {
 }
 
 export interface landingPageDTO {
-    enCartelera?: pelicula[];
-    proximosEstrenos?: pelicula[];
+    enCines?: peliculaDTO[];
+    proximosEstrenos?: peliculaDTO[];
 }
 
 export interface filtroPeliculasForm {

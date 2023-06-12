@@ -15,6 +15,7 @@ import DetallePelicula from "./Components/Peliculas/DetallePelicula";
 import PrivatePeliculasRoute from "./Rutas/PrivatePeliculasRoute";
 import SignIn from "./Components/Auth/Signin";
 import Login from "./Components/Auth/Login";
+import PrivateActoresRoute from "./Rutas/PrivateActoresRoute";
 
 export const rutas = createBrowserRouter(
   createRoutesFromElements(
@@ -28,7 +29,7 @@ export const rutas = createBrowserRouter(
         <Route index element={<LandingPage />} />
         //Peliculas
         <Route path="/peliculas/filtrar" element={<FiltroPeliculas />} />
-        <Route path="/pelicula/:id" element={<DetallePelicula />} />
+        <Route path="/peliculas/:id" element={<DetallePelicula />} />
         <Route
           path="/pelicula/*"
           element={
@@ -64,7 +65,7 @@ export const rutas = createBrowserRouter(
         <Route path="/actores" element={<IndexActores />} />
         <Route path="/actores/*" element={
           <PrivateRoute role="admin">
-            <Route path="crear" element={<CrearActor />} />
+            <PrivateActoresRoute />
           </PrivateRoute>
         } />
 

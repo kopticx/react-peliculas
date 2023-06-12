@@ -7,9 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { notificacionError, notificacionSuccess } from "../Utils/Notificaciones";
+import { useAppDispatch } from "../../redux/hooks/useTypedSelectors";
+import { deleteActor } from "../../redux/slices/actorSlice";
 
 export default function ActorIndividual({actor}: actorIndividualProps) {
 
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -23,18 +26,7 @@ export default function ActorIndividual({actor}: actorIndividualProps) {
   }
 
   const confirm = async () => {
-    await axios.delete(`${import.meta.env.VITE_API_URL}/actores/deleteActor/${actor.id}`)
-          .then(() => {
-            setConfirmLoading(false);
-            setOpen(false);
-            notificacionSuccess({message: "Actor eliminado", description: "El actor se eliminó correctamente."})
-            navigate('/');
-          })
-          .catch(() => {
-            setConfirmLoading(false);
-            setOpen(false);
-            notificacionError({message: "Error al eliminar el actor", description: "Hubo un error al eliminar el actor."})
-          });
+    await dispatch(deleteActor(actor.id));
   }
 
   const cancel = () => {
@@ -63,7 +55,7 @@ export default function ActorIndividual({actor}: actorIndividualProps) {
         </Popconfirm>
       ]}
     >
-      <Meta title={actor.nombre} description={`${actor.biografia.substring(0, 50)}...`} />
+      <Meta title={actor.nombre} description={`${actor.biografia.substring(0, 45)}...`} />
     </Card>
   );
 }

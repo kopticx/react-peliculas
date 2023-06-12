@@ -20,7 +20,7 @@ export default function EditarPelicula() {
     
     useEffect(() => {
       dispatch(getPelicula(id))
-    }, [pelicula]);
+    }, [id]);
 
   const modelo: peliculaFormularioDTO = {
     ...pelicula,

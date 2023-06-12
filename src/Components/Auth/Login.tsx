@@ -2,12 +2,18 @@ import { Button, Checkbox, Form, Input } from "antd";
 import css from "./Auth.module.css";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks/useTypedSelectors";
 import { loginCuenta } from "../../redux/slices/authSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export default function Login() {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const { autenticado } = useAppSelector((state) => state.autenticacion);
+
+  if(autenticado){
+    <Navigate to='/' />
+  }
 
   const onFinish = (values: any) => {
     dispatch(loginCuenta(values));

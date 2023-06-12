@@ -7,10 +7,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { notificacionError, notificacionSuccess } from "../Utils/Notificaciones";
 import { actorToFormData } from "./ActorUtils";
+import { useAppDispatch } from "../../redux/hooks/useTypedSelectors";
 
 export default function EditarActor() {
 
   const [actor, setActor] = useState<actorDTO>();
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const params = useParams();

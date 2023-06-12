@@ -1,3 +1,5 @@
+import { usuario } from "../../redux/models/reduxStates.model";
+
 export type claim = {
   nombre: string;
   valor: string;
@@ -18,5 +20,5 @@ export type login = {
 export type respuestaAutenticacion = {
     token: string;
     expiracion: Date;
-    fotoUsuario: string;
+    usuario: usuario;
 }

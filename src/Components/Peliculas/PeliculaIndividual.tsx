@@ -13,7 +13,7 @@ export default function PeliculaIndividual(props: peliculaIndividualProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const linkDetalle = `/pelicula/${props.pelicula.id}`;
+  const linkDetalle = `/peliculas/${props.pelicula.id}`;
   const linkEditar = `/pelicula/editar/${props.pelicula.id}`;
 
   const [confirmLoading, setConfirmLoading] = useState(false);

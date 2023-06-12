@@ -35,7 +35,7 @@ export function obtenerClaims() : claim[] {
     const expiracionFecha = new Date(expiracion);
 
     if(expiracionFecha <= new Date()){
-        logout();
+        logoutUtil();
         return [];
     }
 
@@ -49,7 +49,11 @@ export function obtenerClaims() : claim[] {
     return response;
 }
 
-export function logout() {
+export function logoutUtil() {
     localStorage.removeItem(llaveToken);
     localStorage.removeItem(llaveExpiracion);
+}
+
+export function obtenerToken() {
+    return localStorage.getItem(llaveToken);
 }

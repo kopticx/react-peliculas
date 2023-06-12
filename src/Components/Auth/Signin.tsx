@@ -2,16 +2,21 @@ import { Button, Checkbox, Form, Input, Upload, UploadFile } from "antd";
 import css from "./Auth.module.css";
 import { useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
-import { registro } from "./Auth.model";
-import { useAppDispatch } from "../../redux/hooks/useTypedSelectors";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks/useTypedSelectors";
 import { signIn } from "../../redux/slices/authSlice";
 import { sigInToFormData } from "./AuthUtils";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function SignIn() {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const { autenticado } = useAppSelector((state) => state.autenticacion);
+
+  if(autenticado){
+    return <Navigate to='/' />
+  }
 
   const beforeUpload = (file: any) => {
     setFileList([...fileList, file]);

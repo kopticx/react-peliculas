@@ -3,7 +3,7 @@ import { IconUser } from "@tabler/icons-react";
 import { Button, DatePicker, Form, Image, Input, Upload, UploadFile, UploadProps } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { actorDTO, actoresFormularioDTO } from "./Actores.model";
+import { actor, actorDTO, actoresFormularioDTO } from "./Actores.model";
 import TextArea from "antd/es/input/TextArea";
 
 export default function FormularioActores(props: formularioActoresProps) {
@@ -86,6 +86,7 @@ export default function FormularioActores(props: formularioActoresProps) {
           name="basic"
           style={{ maxWidth: 600 }}
           onFinish={props.onFinish}
+          onFinishFailed={() => setUploading(false)}
           autoComplete="off"
         >
           <Form.Item className="mb-1">
@@ -136,7 +137,7 @@ export default function FormularioActores(props: formularioActoresProps) {
                 },
               ]}
             >
-              <TextArea rows={5} placeholder="Biografia"></TextArea>
+              <TextArea autoSize placeholder="Biografia"></TextArea>
             </Form.Item>
 
           </Form.Item>

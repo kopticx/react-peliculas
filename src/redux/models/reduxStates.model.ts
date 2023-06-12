@@ -1,4 +1,4 @@
-import { actor } from "../../Components/Actores/Actores.model";
+import { actor, actorDTO } from "../../Components/Actores/Actores.model";
 import { claim } from "../../Components/Auth/Auth.model";
 import { cine } from "../../Components/Cines/Cines.model";
 import { genero } from "../../Components/Generos/Generos.model";
@@ -10,9 +10,9 @@ export interface generoState {
 }
 
 export interface peliculaState {
-    peliculas: pelicula[];
-    enCines: pelicula[];
-    proximosEstrenos: pelicula[];
+    peliculas: peliculaDTO[];
+    enCines?: peliculaDTO[];
+    proximosEstrenos?: peliculaDTO[];
     pelicula: pelicula;
     peliculasFiltro: peliculaDTO[];
     error: string;
@@ -25,17 +25,19 @@ export interface cineState {
 
 export interface actorState {
     actores: actor[];
+    actor: actor;
     error: string;
 }
 
 export interface authState {
     autenticado: boolean;
-    fotoUsuario: string;
     claims: claim[];
+    usuario: usuario;
 }
 
-type usuario = {
+export type usuario = {
+    id: string;
     email: string;
     userName: string;
-    fotoURL: string;
+    fotoUrl: string;
 }

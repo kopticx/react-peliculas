@@ -3,34 +3,32 @@ import { cineState } from "../models/reduxStates.model";
 import axios from "axios";
 
 const initialState: cineState = {
-    cines: [],
-    error: ''
-}
+  cines: [],
+  error: "",
+};
 
-export const getCines = createAsyncThunk(
-    'cine/getCines',
-    async () => {
-        const data = await axios.get(`${import.meta.env.VITE_API_URL}/cines/getCines`);
+export const getCines = createAsyncThunk("cine/getCines", async () => {
+  const data = await axios.get(
+    `${import.meta.env.VITE_API_URL}/cines/getCines`
+  );
 
-        return data.data;
-    }
-)
+  return data.data;
+});
 
 export const cineSlice = createSlice({
-    name: 'cine',
-    initialState,
-    reducers: {
+  name: "cine",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    //Get Cines
+    builder.addCase(getCines.fulfilled, (state, action) => {
+      state.cines = action.payload;
+    });
 
-    },
-    extraReducers: {
-        //Get Cines
-        [getCines.fulfilled.type]: (state, action) => {
-            state.cines = action.payload;
-        },
-        [getCines.rejected.type]: (state, action) => {
-            state.error = action.error.message!;
-        }
-    }
+    builder.addCase(getCines.rejected, (state, action) => {
+      state.error = action.error.message!;
+    });
+  },
 });
 
 export default cineSlice.reducer;

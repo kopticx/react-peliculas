@@ -7,7 +7,7 @@ export default function ListadoActores({ actores }: listadoActoresProps) {
   return (
     <ListadoGenerico listado={actores}>
       <div className={css.divListado}>
-        {actores.map((actor) => (
+        {actores?.length != undefined && actores.map((actor) => (
           <ActorIndividual actor={actor} key={actor.id} />
         ))}
       </div>
@@ -16,5 +16,5 @@ export default function ListadoActores({ actores }: listadoActoresProps) {
 }
 
 interface listadoActoresProps {
-  actores: actorDTO[];
+  actores?: actorDTO[];
 }

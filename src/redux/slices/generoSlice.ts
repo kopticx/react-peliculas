@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { generoState } from "../models/reduxStates.model";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {generoState} from "../models/reduxStates.model";
 import axios from "axios";
 import {
   genero,
@@ -13,22 +13,22 @@ const initialState: generoState = {
 
 export const getGeneros = createAsyncThunk("genero/getGeneros", async () => {
   const data = await axios.get<genero[]>(
-    `${import.meta.env.VITE_API_URL}/generos/GetGeneros`
+   `${import.meta.env.VITE_API_URL}/generos/GetGeneros`
   );
 
   return data.data;
 });
 
 export const postGenero = createAsyncThunk(
-  "genero/postGenero",
-  async (genero: generoCreacionDTO) => {
-    const respuesta = await axios.post<genero>(
-      `${import.meta.env.VITE_API_URL}/generos/postGenero`,
-      genero
-    );
+ "genero/postGenero",
+ async (genero: generoCreacionDTO) => {
+   const respuesta = await axios.post<genero>(
+    `${import.meta.env.VITE_API_URL}/generos/postGenero`,
+    genero
+   );
 
-    return respuesta.data;
-  }
+   return respuesta.data;
+ }
 );
 
 export const generoSlice = createSlice({

@@ -10,15 +10,15 @@ export default function CrearCine() {
 
   const onFinish = async (values: any) => {
     const objeto = crearObjetoPOSTCine(values);
-    
+
     await axios.post(`${import.meta.env.VITE_API_URL}/cines/postCine`, objeto)
-               .then(() => {
-                  notificacionSuccess({message: "Cine creado con éxito", description: "El cine se ha creado correctamente."});
-                  navigate("/cines")
-               })
-               .catch(() => {
-                  notificacionError({message: "Error", description: "Ha ocurrido un error al crear el cine."});
-               })
+      .then(() => {
+        notificacionSuccess({ message: "Cine creado con éxito", description: "El cine se ha creado correctamente." });
+        navigate("/cines")
+      })
+      .catch(() => {
+        notificacionError({ message: "Error", description: "Ha ocurrido un error al crear el cine." });
+      })
   };
 
   const accion = () => {

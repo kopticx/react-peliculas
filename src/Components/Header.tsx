@@ -8,14 +8,14 @@ export default function Header() {
 
   const location = useLocation();
   const dispatch = useAppDispatch();
-  
+
   const {autenticado, usuario: {fotoUrl}, claims} = useAppSelector(state => state.autenticacion);
   const userName = claims.find(x => x.nombre === 'username')?.valor;
 
   const logoutClick = () => {
 	dispatch(logout());
 }
-	
+
   return (
     <nav className="bg-gray-200 shadow shadow-gray-300 w-100 px-8 md:px-auto">
 		<div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
@@ -46,7 +46,7 @@ export default function Header() {
 								alt=""
 							/>
 
-							<Button type="ghost" onClick={logoutClick}>Logout</Button>
+							<Button onClick={logoutClick}>Logout</Button>
 						</div>
 					}
 				</div>

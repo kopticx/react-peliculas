@@ -31,7 +31,7 @@ export const getActor = createAsyncThunk(
     const response = await axios.get<actor>(`${import.meta.env.VITE_API_URL}/actores/getActor/${id}`);
 
     return response.data;
-});
+  });
 
 export const createActor = createAsyncThunk(
   "actor/createActor",
@@ -40,7 +40,7 @@ export const createActor = createAsyncThunk(
       method: 'post',
       url: `${import.meta.env.VITE_API_URL}/actores/postActor`,
       data,
-      headers: {'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' }
     });
 
     return response.data;
@@ -83,23 +83,23 @@ export const actorSlice = createSlice({
 
     //Create Actor
     builder.addCase(createActor.fulfilled, () => {
-      notificacionSuccess({message: "Actor creado", description: "El actor se creó correctamente."});
+      notificacionSuccess({ message: "Actor creado", description: "El actor se creó correctamente." });
     });
 
     builder.addCase(createActor.rejected, (state, action) => {
       state.error = action.error.message!;
-      notificacionError({message: "Error al crear el actor", description: "Hubo un error al crear el actor."});
+      notificacionError({ message: "Error al crear el actor", description: "Hubo un error al crear el actor." });
     });
 
     //Delete Actor
     builder.addCase(deleteActor.fulfilled, (state, action) => {
       state.actores = state.actores.filter((actor) => actor.id !== action.payload);
-      notificacionSuccess({message: "Actor eliminado", description: "El actor se eliminó correctamente."});
+      notificacionSuccess({ message: "Actor eliminado", description: "El actor se eliminó correctamente." });
     });
 
     builder.addCase(deleteActor.rejected, (state, action) => {
       state.error = action.error.message!;
-      notificacionError({message: "Error al eliminar el actor", description: "No se pudo eliminar el actor."});
+      notificacionError({ message: "Error al eliminar el actor", description: "No se pudo eliminar el actor." });
     });
   },
 });
